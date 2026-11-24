@@ -42,7 +42,7 @@ export function intro(pub, { quick = false } = {}) {
     title.append(h('h1', { class: 't-main', 'aria-label': pub.meta.title }, [...word].map((ch, i) => h('span', { style: { animationDelay: i * .06 + 's' }, 'aria-hidden': 'true' }, ch === ' ' ? ' ' : ch))), h('div', { class: 't-ver', 'aria-hidden': 'true' }, ver), h('p', { class: 't-sub' }, pub.meta.subtitle));
     audio.sfx('reveal'); audio.music('c1'); fx.sparkle(innerWidth / 2, innerHeight * .3, 26);
     if (!quick) {
-      await sk.sleep(2300); B.burst(3600, 6); audio.sfx('boing');
+      await sk.sleep(2300); audio.sfx('boing');
       await sk.sleep(1100);
       for (const [i, p] of (I.paragraphs || []).entries()) { story.append(h('p', { class: 'story-p', style: { animationDelay: '0s' } }, p)); audio.sfx('click'); await sk.sleep(1700 + p.length * 12); }
     }
