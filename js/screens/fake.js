@@ -35,7 +35,7 @@ export async function fakeEnding(c) {
   const l1 = h('h1', { class: 'int-1' }, fe.interrupt.line1), l2 = h('p', { class: 'int-2' }, fe.interrupt.line2);
   const go = h('button', { class: 'btn', style: { maxWidth: '320px', margin: '0 auto' } }, fe.interrupt.button || 'Ay, no…');
   const int = h('div', { class: 'interrupt' }, h('div', null, l1, l2, go)); l2.style.opacity = 0; go.style.opacity = 0; go.disabled = true; wrap.append(int);
-  audio.sfx('boing'); l1.classList.add('shake'); await sleep(1700); l2.style.transition = 'opacity .8s'; l2.style.opacity = 1; audio.sfx('glitch'); B.burst(4500, 8); await sleep(1800);
+  audio.sfx('boing'); l1.classList.add('shake'); await sleep(1700); l2.style.transition = 'opacity .8s'; l2.style.opacity = 1; audio.sfx('glitch'); await sleep(1800);
   go.style.transition = 'opacity .6s'; go.style.opacity = 1; go.disabled = false;
   await new Promise((res) => go.addEventListener('click', () => { audio.sfx('whoosh'); res(); }, { once: true }));
   wrap.style.transition = 'opacity .8s'; wrap.style.opacity = 0; await sleep(800); wrap.remove();
