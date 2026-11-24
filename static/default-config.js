@@ -111,29 +111,24 @@ export function defaultConfig() {
         gift: { label: 'Regalo 1', title: 'El calentamiento', description: 'Un detallito para empezar con buen pie.', revealTitle: '¡Primer regalo desbloqueado!', revealText: '[EDITAR] Aquí va lo que haya escondido: un Burn, chuches, chocolates… o lo que decidas.', celebration: 'confetti', photos: [], audio: '', video: '', letter: null, fakeEnding: false, provisional: true },
         location: { name: 'Punto de encuentro 1', lat: loc1.lat, lng: loc1.lng, address: '', ...frag(loc1), note: 'Aquí está tu primer regalo. Busca el código secreto.', provisional: true, provisionalNote: 'Coordenadas heredadas del HTML original. Cámbialas por las reales.' },
         tasks: [
-          task('c1t1', 'quiz', 'Calentamiento', {
-            kicker: 'Calentamiento',
-            hints: ['Piensa en quién ha preparado todo esto…', 'Una de las opciones lleva un nombre propio. Y no es el tuyo.', 'La respuesta es la del «mejor, master y único Hugo».'],
-            rounds: [round('r1', '¿Cuál es la regla de oro para un plan improvisado perfecto?', [
-              opt('a', 'Descubrir un sitio completamente nuevo', false, M_SERIO),
-              opt('b', 'Tiempo de calidad con el mejor, master y único Hugo', true),
-              opt('c', 'Decidir el siguiente paso sobre la marcha', false, M_SERIO),
-            ], { subtitle: 'Elige la opción que mejor te defina.' })],
+          task('c1t1', 'memory', 'Calentamiento', {
+            kicker: 'Minijuego', prompt: 'Calentamos: encuentra las parejas. Spoiler: la mejor pareja de todas es Hugo + tú.',
+            pairs: [{ id: 'p1', icon: 'heart' }, { id: 'p2', icon: 'star' }, { id: 'p3', icon: 'key' }, { id: 'p4', icon: 'car' }],
+            revealText: 'Calentamiento superado. Y sí, Hugo siempre es la mejor opción.',
+            hints: ['Las cartas se repiten, no se inventan.', 'Te dejo ver las cartas un segundo al empezar.', 'Última ayuda: se resaltan dos cartas pareja.'],
           }),
           task('c1t2', 'troll', 'Falsa victoria', {
             kind: 'fakeVictory', heading: '¡ENHORABUENA, NIXI!',
             text: 'Has completado LA VENGANZA 2.0. Tu premio: un fuerte aplauso y absolutamente nada más.',
             twist: '…JA. Qué ingenua. Esto no ha hecho más que empezar.', button: 'Vale, sigamos', photo: true,
           }),
-          task('c1t3', 'quiz', 'Acertijo lógico', {
+          task('c1t3', 'scratch', 'Acertijo lógico', {
             kicker: 'Acertijo lógico',
             callout: '¡Atención: modo reto activado! A partir de aquí se revelan pistas reales. Apunta o guarda lo que aparezca en pantalla (tranquila, la app las guarda en tu mochila).',
-            hints: ['Hugo opina que es «constante».', 'Fíjate en el signo: una suma de dos cosas que no deberían ir juntas.', 'La respuesta empieza por «Peligro».'],
+            prompt: 'Resuelve el acertijo rascando la pantalla:\n«Mujer al volante + Alta velocidad = ?»',
+            revealText: 'Mujer al volante + Alta velocidad = Peligro constante.',
+            hints: ['Pasa el dedo por todo el cuadro.', 'Hugo opina que es «constante».', 'La respuesta empieza por «Peligro».'],
             reward: { fragment: 1, item: null, achievement: '', text: '' },
-            rounds: [round('r1', 'Completa la secuencia lógica:\n«Mujer al volante + Alta velocidad = ?»', [
-              opt('a', 'Peligro constante', true),
-              opt('b', 'Tranquilidad absoluta', false, M_COÑA),
-            ])],
           }),
           task('c1t4', 'runner', 'A ver cómo conduces', {
             kicker: 'Minijuego', prompt: 'Demuestra tu pericia al volante: recoge 8 corazones y esquiva los conos. Toca a izquierda o derecha (o desliza) para cambiar de carril.',
@@ -146,15 +141,13 @@ export function defaultConfig() {
             revealText: 'Mira por dónde, tenías paciencia.',
             hints: ['Se cansa si insistes.', 'Cada intento le cuesta energía.', 'Un par de intentos más y se rinde.'],
           }),
-          task('c1t6', 'quiz', 'Recompensa', {
-            kicker: 'Paso final de preguntas',
-            hints: ['Hugo siempre gana. Siempre.', 'Ninguna de las dos primeras opciones es la buena.', 'La respuesta lleva el nombre de Hugo.'],
+          task('c1t6', 'hidden', 'Recompensa', {
+            kicker: 'Minijuego', scene: 'night',
+            prompt: 'Hugo ha escondido tu recompensa en tres trozos por el cielo. Encuéntralos tocando la pantalla.',
+            hotspots: [{ id: 'r1', x: 18, y: 34, label: 'Recompensa' }, { id: 'r2', x: 74, y: 26, label: 'Recompensa' }, { id: 'r3', x: 52, y: 66, label: 'Recompensa' }],
+            revealText: 'Tu recompensa: la venganza de Hugo. Era la única opción buena.',
+            hints: ['Brillan un poquito más que las demás.', 'Hay una arriba a la derecha.', 'Última ayuda: una de ellas parpadea.'],
             reward: { fragment: 2, item: null, achievement: '', text: 'Reflexión: ahora solo queda que pienses qué podría ser lo mostrado al final de cada pantalla…' },
-            rounds: [round('r1', 'Si pudieras elegir una recompensa al terminar todo esto:', [
-              opt('a', 'Un burn', false, M_GANA),
-              opt('b', 'Un detalle para el coche', false, M_GANA),
-              opt('c', 'La venganza de Hugo', true),
-            ])],
           }),
         ],
       },
@@ -218,25 +211,17 @@ export function defaultConfig() {
         gift: { label: 'Regalo 3', title: 'Una aventura salvaje', description: 'Una experiencia para vivir juntos.', revealTitle: '¡Aventura salvaje desbloqueada!', revealText: 'Dentro del sobre: un vale para vivir una aventura salvaje juntos. [EDITAR: añade aquí la fecha del safari y los detalles]', celebration: 'safari', photos: [], audio: '', video: '', letter: null, fakeEnding: true, provisional: true },
         location: { name: 'Ubicación 3 (provisional)', lat: loc3.lat, lng: loc3.lng, address: '', ...frag(loc3), note: 'Busca el sobre con el vale o las entradas.', provisional: true, provisionalNote: 'Parque de El Retiro (Madrid) como relleno. Cámbiala por la real.' },
         tasks: [
-          task('c3t1', 'quiz', 'Oído fino', {
-            kicker: 'Audios misteriosos',
-            hints: ['Sube el volumen del móvil.', 'Pulsa el altavoz tantas veces como quieras.', 'Son animales, Nixi. Animales.'],
-            rounds: [
-              round('r1', '¿Quién hace este ruido?', [opt('a', 'Un loro'), opt('b', 'Un león', true), opt('c', 'Una cabra')], { sound: 'synth:leon' }),
-              round('r2', '¿Y este?', [opt('a', 'Un elefante', true), opt('b', 'Un trombón'), opt('c', 'Un rinoceronte')], { sound: 'synth:elefante' }),
-              round('r3', '¿Y este escándalo?', [opt('a', 'Un lobo'), opt('b', 'Un mono', true), opt('c', 'Un pájaro')], { sound: 'synth:mono' }),
-              round('r4', 'Último: ¿quién aúlla?', [opt('a', 'Un lobo', true), opt('b', 'Un perro con ansiedad'), opt('c', 'Un búho')], { sound: 'synth:lobo' }),
-            ],
+          task('c3t1', 'sequence', 'Oído fino', {
+            kicker: 'Audios misteriosos', prompt: 'Sube el volumen y repite la secuencia de animales que oigas. Si fallas, Hugo la repite (sin castigo).', length: 3,
+            pads: [{ id: 'leon', label: 'León', sound: 'synth:leon' }, { id: 'elefante', label: 'Elefante', sound: 'synth:elefante' }, { id: 'mono', label: 'Mono', sound: 'synth:mono' }, { id: 'lobo', label: 'Lobo', sound: 'synth:lobo' }],
+            revealText: 'Oído fino confirmado.',
+            hints: ['Sube el volumen del móvil.', 'Son animales, Nixi. Animales.', 'Última ayuda: se iluminan las notas mientras suenan.'],
           }),
-          task('c3t2', 'quiz', 'Acertijos de la sabana', {
-            kicker: 'Acertijos',
+          task('c3t2', 'jigsaw', 'Puzzle de la sabana', {
+            kicker: 'Puzzle', provisional: true, prompt: '[EDITAR] Recompón la foto: toca dos piezas para intercambiarlas. (Sube una foto de la sabana o vuestra desde el panel.)', image: 'gallery-1', grid: 3,
+            revealText: 'Puzle resuelto. Pensabas que sería más difícil, ¿eh?',
             reward: { fragment: 1, item: null, achievement: '', text: '' },
-            hints: ['Piensa en animales grandes.', 'Todos viven en climas cálidos.', 'Pista final: jirafa, cebra y león.'],
-            rounds: [
-              round('r1', 'Tengo un cuello larguísimo y nunca me duele la cervical. ¿Quién soy?', [opt('a', 'Una jirafa', true), opt('b', 'Un flamenco'), opt('c', 'Un avestruz')]),
-              round('r2', 'Voy siempre de pijama de rayas blancas y negras. ¿Quién soy?', [opt('a', 'Un tigre'), opt('b', 'Una cebra', true), opt('c', 'Un tejón')]),
-              round('r3', 'Soy el rey y mi melena no necesita laca. ¿Quién soy?', [opt('a', 'Un león', true), opt('b', 'Un caballo'), opt('c', 'Un mapache')]),
-            ],
+            hints: ['Empieza por las esquinas.', 'Toca «Ver modelo» para mirar la foto completa.', 'Última ayuda: Hugo coloca dos piezas por ti.'],
           }),
           task('c3t3', 'sequence', 'Eco animal', {
             kicker: 'Prueba de memoria', prompt: 'Repite la secuencia de sonidos. Si te equivocas, Hugo la vuelve a repetir (sin castigo).', length: 5,
@@ -275,14 +260,10 @@ export function defaultConfig() {
         },
         location: { name: 'Ubicación final (provisional)', lat: loc4.lat, lng: loc4.lng, address: '', ...frag(loc4), note: 'Hugo te espera aquí.', provisional: true, provisionalNote: 'Templo de Debod (Madrid) como relleno. Cámbiala por la real.' },
         tasks: [
-          task('c4t1', 'quiz', 'Recuerdos', {
-            kicker: 'Recuerdos', provisional: true,
+          task('c4t1', 'order', 'Recuerdos', {
+            kicker: 'Línea del tiempo', provisional: true, prompt: '[EDITAR] Ordena nuestros recuerdos más importantes, del primero al último.',
+            items: [{ id: 'i1', text: 'Recuerdo 1 (edítame)' }, { id: 'i2', text: 'Recuerdo 2 (edítame)' }, { id: 'i3', text: 'Recuerdo 3 (edítame)' }, { id: 'i4', text: 'Recuerdo 4 (edítame)' }],
             hints: ['Esta vez no hay trampa.', 'Piensa en lo que sentiste.', '[EDITAR] La última pista debe dar la respuesta.'],
-            rounds: [
-              round('r1', '[EDITAR] ¿Qué fue lo primero que pensé al verte?', [opt('a', 'Respuesta A (edítame)', true), opt('b', 'Respuesta B (edítame)'), opt('c', 'Respuesta C (edítame)')]),
-              round('r2', '[EDITAR] ¿Cuál es nuestro sitio favorito?', [opt('a', 'Sitio A (edítame)'), opt('b', 'Sitio B (edítame)', true), opt('c', 'Sitio C (edítame)')]),
-              round('r3', '[EDITAR] ¿Qué es lo que más echo de menos cuando no estás?', [opt('a', 'Opción A (edítame)'), opt('b', 'Opción B (edítame)'), opt('c', 'Opción C (edítame)', true)]),
-            ],
           }),
           task('c4t2', 'media', 'Un mensaje de Hugo', {
             kicker: 'Antes de seguir', prompt: 'Hugo tiene algo que decirte. Dale al play.', media: '', requirePlay: false, provisional: true,
