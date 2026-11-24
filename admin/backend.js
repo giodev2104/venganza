@@ -3,15 +3,22 @@ import { validateConfig } from '../static/validate.js';
 import { defaultConfig } from '../static/default-config.js';
 
 export const MODE = 'static';
-export const LOGIN = { label: 'Token de GitHub', help: 'Pega tu token de GitHub (fine-grained, solo este repositorio, permiso «Contents: Read and write»). Se guarda únicamente en este navegador.' };
+export const LOGIN = { label: 'Contraseña', help: 'Primera vez en este dispositivo: pega tu token de GitHub (fine-grained, solo este repositorio, «Contents: Read and write») y elige una contraseña. Después entras solo con la contraseña. Nada de esto sale de tu navegador.' };
 
 const ls = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* ok */ } }, del: (k) => { try { localStorage.removeItem(k); } catch { /* ok */ } } };
+const tok = { get: () => { try { return sessionStorage.getItem('venganza.token'); } catch { return null; } }, set: (v) => { try { sessionStorage.setItem('venganza.token', v); } catch { /* ok */ } }, del: () => { try { sessionStorage.removeItem('venganza.token'); } catch { /* ok */ } } };
+// Cámara acorazada local: el token se cifra con tu contraseña (PBKDF2 + AES-GCM) y solo vive en este navegador, nunca en el repositorio.
+const b2s = (u) => btoa(String.fromCharCode(...u)), s2b = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+async function vaultKey(pw, salt) { const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']); return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 300000, hash: 'SHA-256' }, k, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']); }
+async function vaultSave(token, pw) { const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)), ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await vaultKey(pw, salt), new TextEncoder().encode(token))); ls.set('venganza.vault', JSON.stringify({ s: b2s(salt), i: b2s(iv), c: b2s(ct) })); }
+async function vaultOpen(pw) { try { const v = JSON.parse(ls.get('venganza.vault')); return new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: s2b(v.i) }, await vaultKey(pw, s2b(v.s)), s2b(v.c))); } catch { return null; } }
+const isToken = (x) => /^(github_pat_|gh[pousr]_)/.test(x) || x.length > 30;
 const repoSlug = () => ls.get('venganza.ghrepo') || `${location.hostname.split('.')[0]}/${location.pathname.split('/')[1]}`;
 const API = () => ls.get('venganza.ghapi') || 'https://api.github.com';
 const err = (status, message, data) => Object.assign(new Error(message), { status, data });
 
 async function gh(path, { method = 'GET', body } = {}) {
-  const token = ls.get('venganza.token');
+  const token = tok.get();
   if (!token) throw err(401, 'Sin sesión');
   let res;
   try {
@@ -41,14 +48,17 @@ const KINDS = { jpg: 'image', jpeg: 'image', png: 'image', webp: 'image', gif: '
 export async function api(path, { method = 'GET', body, raw } = {}) {
   const u = new URL(path, 'http://x'), p = u.pathname;
   switch (p) {
-    case '/api/admin/me': if (!ls.get('venganza.token')) throw err(401, 'Sin sesión'); return { ok: true };
+    case '/api/admin/me': if (!tok.get()) throw err(401, 'Sin sesión'); return { ok: true };
     case '/api/admin/login': {
-      ls.set('venganza.token', String((body || {}).password || '').trim());
+      const given = String((body || {}).password || '').trim(); let fresh = false;
+      if (isToken(given)) { tok.set(given); fresh = true; }
+      else { const t = ls.get('venganza.vault') ? await vaultOpen(given) : null; if (!t) throw err(401, ls.get('venganza.vault') ? 'Contraseña incorrecta' : 'En este dispositivo aún no hay contraseña: pega primero el token de GitHub.'); tok.set(t); }
       try { const r = await gh(`/repos/${repoSlug()}`); if (!r.permissions || !r.permissions.push) throw err(401, 'El token no tiene permiso de escritura en este repositorio'); }
-      catch (e) { ls.del('venganza.token'); throw e.status === 404 ? err(401, 'No encuentro el repositorio con ese token') : e; }
+      catch (e) { tok.del(); throw e.status === 404 ? err(401, 'No encuentro el repositorio con ese token') : e; }
+      if (fresh) { const pw = (typeof prompt === 'function' ? prompt('Token correcto ✔. Elige una contraseña para entrar desde este dispositivo (el token se guardará cifrado con ella):') : '') || ''; if (pw.length >= 4) await vaultSave(given, pw); }
       ls.set('venganza.admin', '1'); return { ok: true };
     }
-    case '/api/admin/logout': ls.del('venganza.token'); ls.del('venganza.admin'); return { ok: true };
+    case '/api/admin/logout': tok.del(); ls.del('venganza.admin'); return { ok: true };
     case '/api/admin/config': {
       if (method === 'GET') { const { cfg } = await readConfig(); return { config: cfg, validation: validateConfig(cfg), defaults: defaultConfig() }; }
       const v = validateConfig(body.config); if (v.errors.length) throw err(422, 'La configuración tiene errores', { validation: v });
