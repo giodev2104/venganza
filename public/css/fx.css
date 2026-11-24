@@ -1,0 +1,77 @@
+/* ───────── Fotos rebotantes (solo en momentos concretos) ───────── */
+#bouncers { transition: opacity .45s; } #bouncers.out { opacity: 0; }
+.bouncer { position: absolute; left: 0; top: 0; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, .8); box-shadow: 0 0 22px rgba(244, 114, 182, .7), 0 0 34px rgba(103, 232, 249, .4); will-change: transform; animation: bPop .5s var(--spring) both; }
+@keyframes bPop { from { opacity: 0; scale: .3; } to { opacity: 1; scale: 1; } }
+
+/* ───────── Introducción cinematográfica ───────── */
+.spark-logo { width: 84px; height: 84px; margin: 0 auto; border-radius: 26px; background: linear-gradient(140deg, #5b21b6, #be185d); display: grid; place-items: center; box-shadow: 0 0 50px -6px rgba(168, 85, 247, .8), inset 0 1px 0 rgba(255, 255, 255, .35); animation: pulseGlow 2.6s ease-in-out infinite alternate; }
+.spark-logo svg { width: 46px; height: 46px; fill: #fff7fb; }
+@keyframes pulseGlow { from { box-shadow: 0 0 30px -6px rgba(168, 85, 247, .6), inset 0 1px 0 rgba(255, 255, 255, .35); } to { box-shadow: 0 0 64px -2px rgba(236, 72, 153, .85), inset 0 1px 0 rgba(255, 255, 255, .35); } }
+.cine-lines { min-height: 3.4em; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.cine-line { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.3rem, 6vw, 1.8rem); color: var(--ink); margin: 0; opacity: 0; animation: lineIn .9s var(--ease) forwards; }
+@keyframes lineIn { from { opacity: 0; transform: translateY(14px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+.title-lockup { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.t-main { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.6rem, 15vw, 4.6rem); letter-spacing: -.045em; line-height: .9; margin: 0; display: flex; }
+.t-main span { display: inline-block; opacity: 0; transform: translateY(40px) rotate(6deg); animation: letterIn .8s var(--spring) forwards; }
+@keyframes letterIn { to { opacity: 1; transform: none; } }
+.t-ver { font-family: ui-monospace, Menlo, monospace; font-weight: 800; font-size: clamp(1.9rem, 10vw, 3rem); letter-spacing: .06em; opacity: 0; animation: verIn .6s steps(6) .9s forwards; }
+@keyframes verIn { 0% { opacity: 0; transform: skewX(20deg) translateX(-20px); } 40% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+.t-sub { margin: 6px 0 0; color: var(--ink-2); letter-spacing: .08em; opacity: 0; animation: lineIn .9s var(--ease) 1.4s forwards; }
+.story-p { margin: 0; opacity: 0; animation: lineIn .9s var(--ease) forwards; color: var(--ink-2); font-size: 1.08rem; text-wrap: pretty; }
+.story-p:last-of-type { color: var(--ink); font-weight: 500; }
+.fade-up { opacity: 0; animation: lineIn .8s var(--ease) forwards; }
+
+/* ───────── Tarjeta de capítulo ───────── */
+.title-card { position: absolute; inset: 0; z-index: 25; display: grid; place-items: center; text-align: center; padding: 30px; background: radial-gradient(700px 500px at 50% 45%, rgba(var(--glow), .22), rgba(5, 3, 12, .96) 70%); animation: tcIn .6s ease both; }
+.title-card.out { animation: tcOut .7s ease forwards; }
+@keyframes tcIn { from { opacity: 0; } to { opacity: 1; } } @keyframes tcOut { to { opacity: 0; transform: scale(1.04); } }
+.tc-kicker { letter-spacing: .5em !important; opacity: 0; animation: lineIn .9s var(--ease) .2s forwards; }
+.tc-title { margin: 14px 0 10px; opacity: 0; animation: lineIn 1s var(--ease) .5s forwards; }
+.tc-rule { width: 0; height: 2px; margin: 0 auto; background: linear-gradient(90deg, transparent, var(--a1), transparent); animation: rule 1.2s var(--ease) .9s forwards; }
+@keyframes rule { to { width: min(260px, 70%); } }
+.tc-sub { margin: 14px 0 0; color: var(--ink-2); font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; opacity: 0; animation: lineIn 1s var(--ease) 1.3s forwards; }
+
+/* ───────── Falso final: créditos y glitch ───────── */
+.credits-wrap { position: absolute; inset: 0; z-index: 28; background: #000; overflow: hidden; display: grid; place-items: center; }
+.credits-roll { position: absolute; left: 0; right: 0; top: 100%; text-align: center; padding: 0 24px; display: flex; flex-direction: column; gap: 26px; animation: roll 15s linear forwards; }
+@keyframes roll { to { transform: translateY(calc(-100% - 100vh)); } }
+.cr-role { font-family: var(--font-display); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 4px; } .cr-name { font-family: var(--font-serif); font-size: 1.45rem; margin: 0; }
+.cr-end { position: absolute; font-family: var(--font-display); font-size: 3rem; letter-spacing: .5em; text-indent: .5em; opacity: 0; transition: opacity 1s; } .cr-end.in { opacity: 1; }
+.glitching { animation: glitchShake .12s steps(2) infinite; }
+.glitching::before, .glitching::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+.glitching::before { background: repeating-linear-gradient(0deg, rgba(255, 0, 80, .16) 0 3px, transparent 3px 7px); mix-blend-mode: screen; }
+.glitching::after { background: linear-gradient(90deg, rgba(0, 255, 255, .22), transparent 30%, rgba(255, 0, 100, .22) 70%, transparent); mix-blend-mode: screen; animation: slice .2s steps(3) infinite; }
+@keyframes glitchShake { 0% { transform: translate(2px, 0) skewX(0); filter: hue-rotate(0); } 25% { transform: translate(-4px, 2px) skewX(3deg); filter: hue-rotate(90deg) saturate(2); } 50% { transform: translate(3px, -2px) skewX(-4deg); } 75% { transform: translate(-2px, 1px) skewX(2deg); filter: hue-rotate(-60deg); } 100% { transform: translate(0); } }
+@keyframes slice { 0% { clip-path: inset(10% 0 70% 0); } 33% { clip-path: inset(55% 0 20% 0); } 66% { clip-path: inset(30% 0 45% 0); } 100% { clip-path: inset(80% 0 5% 0); } }
+.interrupt { position: absolute; inset: 0; z-index: 29; display: grid; place-items: center; text-align: center; padding: 28px; background: #000; }
+.int-1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 13vw, 4rem); letter-spacing: -.03em; line-height: 1; margin: 0 0 16px; }
+.int-2 { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.3rem, 6vw, 1.7rem); margin: 0 0 28px; color: var(--ink-2); }
+
+/* ───────── Regalo desbloqueado ───────── */
+.giftbox { position: relative; width: 190px; height: 190px; margin: 0 auto; }
+.giftbox svg { width: 100%; height: 100%; overflow: visible; }
+.giftbox .lid { transform-box: fill-box; transform-origin: 20% 100%; transition: transform .9s var(--spring); }
+.giftbox.open .lid { transform: translateY(-46px) rotate(-24deg); }
+.giftbox .rays { opacity: 0; transition: opacity .8s .2s; transform-origin: 50% 50%; } .giftbox.open .rays { opacity: 1; animation: spin 14s linear infinite; }
+.giftbox.shaking { animation: shake .6s ease both; }
+.unlock-card { text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+.ticket { position: relative; width: 100%; padding: 22px 20px; border-radius: 18px; background: linear-gradient(135deg, #3b1a12, #5a2a14 60%, #3b1a12); border: 1px dashed rgba(253, 224, 71, .6); color: #fde9b0; animation: ticketIn 1.2s var(--spring) both; -webkit-mask: radial-gradient(circle 11px at 0 50%, #0000 98%, #000) left/51% 100% no-repeat, radial-gradient(circle 11px at 100% 50%, #0000 98%, #000) right/51% 100% no-repeat; mask: radial-gradient(circle 11px at 0 50%, #0000 98%, #000) left/51% 100% no-repeat, radial-gradient(circle 11px at 100% 50%, #0000 98%, #000) right/51% 100% no-repeat; }
+@keyframes ticketIn { from { opacity: 0; transform: translateY(40px) rotate(-6deg) scale(.8); } to { opacity: 1; transform: none; } }
+.ticket .t1 { font-family: var(--font-display); letter-spacing: .22em; font-size: 11px; text-transform: uppercase; opacity: .8; } .ticket .t2 { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; line-height: 1.1; margin: 6px 0; color: #fff3cf; }
+.paws { position: relative; height: 34px; overflow: hidden; color: var(--a1); } .paws span { position: absolute; top: 4px; opacity: 0; animation: paw 3.2s ease-in-out forwards; } @keyframes paw { 0% { opacity: 0; transform: translateX(-20px); } 20%, 70% { opacity: .9; } 100% { opacity: 0; transform: translateX(30px); } }
+.savanna { position: absolute; left: 0; right: 0; bottom: 0; height: 40%; pointer-events: none; z-index: -1; opacity: .9; }
+.sun-rise { position: absolute; left: 50%; bottom: -80px; width: 260px; height: 260px; margin-left: -130px; border-radius: 50%; background: radial-gradient(circle, #fde68a, #fb923c 55%, transparent 70%); animation: sunUp 4s var(--ease) forwards; pointer-events: none; }
+@keyframes sunUp { to { transform: translateY(-150px); } }
+
+/* ───────── Carta y finale romántico ───────── */
+.paper { position: relative; padding: 26px 22px 22px; border-radius: 6px 20px 6px 20px; background: linear-gradient(170deg, #f6ecdc, #e9d9bf); color: #3a2a2a; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7), inset 0 0 40px rgba(120, 80, 40, .15); font-family: var(--font-serif); font-size: 1.12rem; line-height: 1.65; min-height: 220px; transform: rotate(-.6deg); }
+.paper p { margin: 0 0 12px; } .paper .sign { font-style: italic; text-align: right; margin-top: 18px; font-size: 1.25rem; }
+.caret::after { content: '▍'; animation: blink 1s steps(1) infinite; opacity: .7; } @keyframes blink { 50% { opacity: 0; } }
+.polaroids { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 12px 6px 18px; margin: 0 -20px; padding-inline: 20px; scrollbar-width: none; }
+.polaroids::-webkit-scrollbar { display: none; }
+.polaroid { flex: none; width: min(70vw, 270px); scroll-snap-align: center; background: #f7f1e6; padding: 12px 12px 36px; border-radius: 4px; box-shadow: 0 18px 36px -12px rgba(0, 0, 0, .7); transform: rotate(var(--r, -2deg)); animation: polIn .9s var(--spring) both; }
+.polaroid img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #ddd; }
+@keyframes polIn { from { opacity: 0; transform: translateY(50px) rotate(calc(var(--r, -2deg) * 3)) scale(.8); } to { opacity: 1; } }
+.fin { font-family: var(--font-serif); font-style: italic; font-size: 2rem; text-align: center; }
+.media-box { border-radius: 20px; overflow: hidden; border: 1px solid var(--line-2); background: #000; } .media-box video { width: 100%; max-height: 52vh; background: #000; } .media-box audio { width: 100%; }
+.audio-card { display: flex; gap: 14px; align-items: center; padding: 16px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); } .audio-card audio { width: 100%; }

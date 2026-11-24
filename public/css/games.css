@@ -1,0 +1,137 @@
+/* Minijuegos y pruebas: caja fuerte, ordenar, foto pixelada, rascar, objetos ocultos, memoria, puzzle, botón escurridizo, secuencia, conducción y trolleos. */
+.task-main { display: flex; flex-direction: column; gap: 16px; }
+.story { display: flex; flex-direction: column; gap: 14px; text-align: left; max-width: 34rem; }
+.boot-error { position: fixed; inset: 0; z-index: 200; display: grid; place-content: center; gap: 14px; padding: 28px; text-align: center; background: #0a0814; color: #f6f2ff; }
+
+/* ── Caja fuerte ── */
+.safe { border-radius: 26px; padding: 14px; background: linear-gradient(160deg, #2a2a38, #14141c 60%); border: 1px solid rgba(255, 255, 255, .14); box-shadow: 0 24px 50px -20px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(255, 255, 255, .12); max-width: 340px; width: 100%; margin: 0 auto; transition: transform .4s var(--spring); }
+.safe.busy { opacity: .85; pointer-events: none; }
+.sf-top { display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 12px; border-radius: 16px; background: #07070c; box-shadow: inset 0 2px 8px rgba(0, 0, 0, .8); }
+.sf-screen { flex: 1; display: flex; gap: 8px; justify-content: center; }
+.sf-digit { width: 44px; height: 56px; display: grid; place-items: center; border-radius: 10px; background: #10231f; color: var(--ok); font: 700 1.9rem/1 ui-monospace, Menlo, monospace; border: 1px solid rgba(94, 234, 212, .22); }
+.sf-digit.on { border-color: var(--ok); box-shadow: 0 0 0 2px rgba(94, 234, 212, .25); }
+.sf-led { width: 12px; height: 12px; border-radius: 50%; background: #3a3a48; transition: background .2s, box-shadow .2s; }
+.sf-led.good { background: var(--ok); box-shadow: 0 0 14px var(--ok); }
+.sf-led.bad { background: var(--bad); box-shadow: 0 0 14px var(--bad); }
+.sf-handle { position: relative; width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #5a5a6c, #23232e); border: 1px solid rgba(255, 255, 255, .2); transition: transform .9s var(--ease); }
+.sf-handle i { position: absolute; left: 50%; top: 50%; width: 38px; height: 4px; margin: -2px 0 0 -19px; border-radius: 2px; background: #9a9ab0; }
+.safe.opened .sf-handle { transform: rotate(220deg); }
+.sf-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.sf-key { min-height: 58px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, .14); background: linear-gradient(180deg, #34344a, #232333); color: #f1eefc; font: 600 1.35rem/1 var(--font-display); transition: transform .12s, background .2s; }
+.sf-key:active { transform: translateY(2px) scale(.97); background: #3e3e58; }
+.sf-go { grid-column: span 3; font-size: 1.05rem; background: var(--btn); color: var(--on-btn); }
+.sf-del { color: var(--ink-2); }
+.is-off { opacity: .45; filter: saturate(.5); }
+
+/* ── Ordenar ── */
+.ord { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: o; }
+.ord.ok .ord-item { border-color: rgba(94, 234, 212, .5); }
+.ord-item { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 12px; padding: 10px 10px 10px 14px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); transition: border-color .3s, background .3s; }
+.ord-item.flash { background: rgba(var(--glow), .2); border-color: rgba(var(--glow), .6); }
+.ord-n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(var(--glow), .25); font: 600 .9rem var(--font-display); }
+.ord-t { line-height: 1.3; }
+.ord-btns { display: flex; gap: 6px; }
+.ord-btns button { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--surface-2); color: var(--ink); display: grid; place-items: center; }
+.ord-btns button:disabled { opacity: .3; }
+
+/* ── Foto pixelada ── */
+.px-frame { border-radius: var(--r); overflow: hidden; border: 1px solid var(--line-2); background: #0006; display: grid; place-items: center; }
+.px-canvas { display: block; max-width: 100%; height: auto; }
+.px-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.px-bar .btn { width: auto; }
+
+/* ── Rascar ── */
+.sc-card { position: relative; height: 210px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line-2); touch-action: none; }
+.sc-under { position: absolute; inset: 0; display: grid; place-items: center; padding: 18px; text-align: center; background: linear-gradient(160deg, rgba(var(--glow), .3), rgba(0, 0, 0, .3)); }
+.sc-q { font: 700 2rem var(--font-display); letter-spacing: .3em; color: var(--ink-3); }
+.sc-text { margin: 0; font: 600 1.25rem/1.35 var(--font-display); }
+.sc-canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; transition: opacity .6s; }
+.sc-canvas.gone { opacity: 0; pointer-events: none; }
+.mini-bar { height: 6px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+.mini-bar b { display: block; height: 100%; width: 0; background: var(--btn); border-radius: 3px; transition: width .25s; }
+
+/* ── Escena con objetos ocultos ── */
+.hunt { position: relative; width: 100%; max-width: 420px; margin: 0 auto; aspect-ratio: 1 / 1.08; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line-2); touch-action: manipulation; }
+.hunt svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.spot { position: absolute; width: 52px; height: 52px; margin: -26px 0 0 -26px; border: 0; padding: 0; background: transparent; border-radius: 50%; display: grid; place-items: center; }
+.twinkle { width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 0 10px 3px rgba(196, 181, 253, .7); animation: tw 2.6s ease-in-out infinite; opacity: .55; }
+.eyes { display: flex; gap: 8px; opacity: .2; transition: opacity .3s; }
+.eyes i { width: 9px; height: 6px; border-radius: 50%; background: #fde047; box-shadow: 0 0 8px #fde047; }
+.spot.assist .twinkle, .spot.assist .eyes { opacity: 1; animation: pulse 1s ease-in-out infinite; }
+.spot.found { pointer-events: none; }
+.spot.found .twinkle, .spot.found .eyes { opacity: 1; transform: scale(2.2); filter: drop-shadow(0 0 8px currentColor); }
+.spot.found::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; border: 2px solid var(--ok); }
+@keyframes tw { 50% { opacity: 1; transform: scale(1.3); } }
+@keyframes pulse { 50% { transform: scale(1.5); } }
+
+/* ── Memoria ── */
+.mem-grid { display: grid; gap: 10px; }
+.mem-card { aspect-ratio: 1; padding: 0; border: 0; background: transparent; perspective: 600px; }
+.mem-in { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .45s var(--ease); }
+.mem-card.up .mem-in { transform: rotateY(180deg); }
+.mem-back, .mem-front { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.mem-back { background: linear-gradient(145deg, rgba(var(--glow), .5), rgba(255, 255, 255, .05)); border: 1px solid var(--line-2); }
+.mem-back i { width: 28%; height: 28%; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .4); }
+.mem-front { transform: rotateY(180deg); background: var(--surface-2); border: 1px solid var(--line-2); color: var(--a2); }
+.mem-front img { width: 100%; height: 100%; object-fit: cover; }
+.mem-card.ok .mem-front { border-color: var(--ok); box-shadow: 0 0 0 2px rgba(94, 234, 212, .3); }
+
+/* ── Puzzle de foto ── */
+.jg-wrap { position: relative; max-width: 380px; width: 100%; margin: 0 auto; }
+.jg-grid { display: grid; gap: 3px; aspect-ratio: 1; padding: 3px; border-radius: 18px; background: var(--line); touch-action: manipulation; transition: padding .5s, gap .5s; }
+.jg-grid.solved { gap: 0; padding: 0; }
+.jg-tile { border: 0; padding: 0; border-radius: 6px; background-color: var(--surface-2); background-repeat: no-repeat; min-width: 0; min-height: 0; transition: transform .25s var(--spring); }
+.jg-tile.sel { outline: 3px solid var(--a2); outline-offset: -3px; transform: scale(.94); z-index: 1; }
+.jg-tile.swap { animation: pop .3s var(--spring); }
+.jg-tile.hintring { outline: 3px dashed var(--ok); outline-offset: -3px; }
+.jg-model { position: absolute; inset: 0; border-radius: 18px; background-size: cover; background-position: center; opacity: 0; pointer-events: none; transition: opacity .2s; border: 2px solid var(--a2); }
+.jg-model.on { opacity: 1; }
+
+/* ── Botón escurridizo ── */
+.ra-arena { position: relative; height: 280px; border-radius: var(--r); border: 1px dashed var(--line-2); background: var(--surface); overflow: hidden; touch-action: manipulation; }
+.ra-btn { position: absolute; width: auto; min-width: 170px; transition: left .28s var(--spring), top .28s var(--spring), transform .2s; }
+.ra-btn.tired { animation: none; filter: saturate(.6); transform: rotate(-3deg); }
+.ra-say { min-height: 1.6em; margin: 0; text-align: center; color: var(--ink-2); font-style: italic; }
+.ra-say.pop { animation: pop .35s var(--spring); }
+
+/* ── Secuencia ── */
+.sq-dots { display: flex; gap: 6px; justify-content: center; min-height: 10px; }
+.sq-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--line-2); }
+.sq-dots i.on { background: var(--a2); border-color: var(--a2); }
+.sq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 360px; width: 100%; margin: 0 auto; }
+.sq-pad { aspect-ratio: 1.15; border-radius: 22px; border: 1px solid var(--line-2); color: #fff; font: 600 1.05rem var(--font-display); background: var(--surface); transition: transform .12s, filter .15s, box-shadow .2s; }
+.sq-pad.p0 { background: linear-gradient(145deg, #7c3aed66, #7c3aed22); } .sq-pad.p1 { background: linear-gradient(145deg, #db277766, #db277722); }
+.sq-pad.p2 { background: linear-gradient(145deg, #0891b266, #0891b222); } .sq-pad.p3 { background: linear-gradient(145deg, #d9770666, #d9770622); }
+.sq-pad.lit { filter: brightness(1.9) saturate(1.3); transform: scale(.96); box-shadow: 0 0 28px rgba(255, 255, 255, .35); }
+.sq-pad.guide { outline: 3px dashed var(--ok); outline-offset: 3px; }
+
+/* ── Conducción ── */
+.rn-wrap { position: relative; width: 100%; max-width: 360px; height: min(58vh, 460px); min-height: 320px; margin: 0 auto; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line-2); touch-action: none; }
+.rn-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.rn-hud { position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; gap: 8px; padding: 10px 14px; pointer-events: none; font-weight: 600; text-shadow: 0 1px 4px #000; }
+.rn-msg { color: var(--a3); font-size: .9rem; text-align: right; }
+
+/* ── Trolleos ── */
+.troll { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding-top: 6vh; }
+.fv-trophy { color: var(--a2); filter: drop-shadow(0 0 22px rgba(var(--glow), .8)); animation: pop .8s var(--spring) both; }
+.fv-trophy.off { color: var(--bad); filter: none; }
+.fe-box { width: 100%; padding: 20px; border-radius: 16px; border: 1px solid rgba(251, 113, 133, .5); background: rgba(40, 8, 18, .75); text-align: left; display: flex; flex-direction: column; gap: 10px; }
+.fe-code { font: 600 .8rem ui-monospace, Menlo, monospace; color: var(--bad); letter-spacing: .08em; }
+.fe-bar { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .1); overflow: hidden; }
+.fe-bar i { display: block; height: 100%; width: 0; background: var(--bad); transition: width .25s; }
+.giftbtn { background: none; border: 0; padding: 0; width: 180px; }
+
+/* Estados compartidos de pasos anteriores (cajas de regalo y animaciones) */
+.giftbox.shaking { animation: shakeBox .6s ease-in-out; }
+@keyframes shakeBox { 20% { transform: rotate(-6deg); } 40% { transform: rotate(6deg); } 60% { transform: rotate(-4deg); } 80% { transform: rotate(4deg); } }
+.skipped .cine-line, .skipped .story-p { animation-duration: .01s !important; animation-delay: 0s !important; }
+@media (prefers-reduced-motion: reduce) { .twinkle, .spot.assist .twinkle, .spot.assist .eyes, .sq-pad, .mem-in, .ra-btn { animation: none !important; transition: none !important; } }
+
+/* Ajustes de revelación y modo pruebas */
+.reveal .giftbox { margin-top: 44px; margin-bottom: 8px; }
+body.testing .screen > .body { padding-bottom: 120px; }
+
+/* Evita que un elemento fuera de pantalla (toast, confeti, foco) desplace toda la app en horizontal */
+html, body { overflow-x: clip; }
+#app { overflow: hidden; overflow: clip; }
+a.btn { text-decoration: none; }
