@@ -1,5 +1,5 @@
 // Utilidades criptográficas y de normalización del servidor (sin dependencias).
-import crypto from 'node:crypto';
+import crypto from './crypto-shim.js';
 
 export const rid = (n = 8) => crypto.randomBytes(n).toString('base64url').replace(/[-_]/g, 'x').slice(0, n);
 

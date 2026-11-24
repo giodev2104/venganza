@@ -72,7 +72,7 @@ async function main() {
   ui.HUD.init({ bag: openBag, ach: openAch, settings: () => openSettings({ onReset: hardReset, install: installEvt ? async () => { installEvt.prompt(); await installEvt.userChoice; installEvt = null; } : null }) });
   rt.openBag = openBag;
   if (rt.test) { document.body.classList.add('testing'); testbar(); }
-  if ('serviceWorker' in navigator && !rt.test) navigator.serviceWorker.register('/sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && !rt.test) navigator.serviceWorker.register('sw.js').catch(() => {});
   syncPending();
 
   ui.setTheme(currentId() ? (store.cs(currentId()).meta ? store.cs(currentId()).meta.theme : 'c1') : 'c1', { quiet: true });

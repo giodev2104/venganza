@@ -1,0 +1,3 @@
+Versión estática de LA VENGANZA 2.0.
+Sube TODO el contenido de esta carpeta a un repositorio de GitHub y activa Pages (Settings → Pages → Deploy from a branch → main / root).
+Advertencia: sin servidor, las respuestas y códigos van dentro de la web.
