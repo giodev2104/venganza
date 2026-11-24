@@ -7,10 +7,10 @@
 .safe { border-radius: 26px; padding: 14px; background: linear-gradient(160deg, #2a2a38, #14141c 60%); border: 1px solid rgba(255, 255, 255, .14); box-shadow: 0 24px 50px -20px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(255, 255, 255, .12); max-width: 340px; width: 100%; margin: 0 auto; transition: transform .4s var(--spring); }
 .safe.busy { opacity: .85; pointer-events: none; }
 .sf-top { display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 12px; border-radius: 16px; background: #07070c; box-shadow: inset 0 2px 8px rgba(0, 0, 0, .8); }
-.sf-screen { flex: 1; display: flex; gap: 8px; justify-content: center; }
-.sf-digit { width: 44px; height: 56px; display: grid; place-items: center; border-radius: 10px; background: #10231f; color: var(--ok); font: 700 1.9rem/1 ui-monospace, Menlo, monospace; border: 1px solid rgba(94, 234, 212, .22); }
+.sf-screen { flex: 1; min-width: 0; display: flex; gap: 6px; justify-content: center; }
+.sf-digit { flex: 1 1 0; min-width: 0; max-width: 44px; height: 56px; display: grid; place-items: center; border-radius: 10px; background: #10231f; color: var(--ok); font: 700 1.9rem/1 ui-monospace, Menlo, monospace; border: 1px solid rgba(94, 234, 212, .22); }
 .sf-digit.on { border-color: var(--ok); box-shadow: 0 0 0 2px rgba(94, 234, 212, .25); }
-.sf-led { width: 12px; height: 12px; border-radius: 50%; background: #3a3a48; transition: background .2s, box-shadow .2s; }
+.sf-led { flex: none; width: 12px; height: 12px; border-radius: 50%; background: #3a3a48; transition: background .2s, box-shadow .2s; }
 .sf-led.good { background: var(--ok); box-shadow: 0 0 14px var(--ok); }
 .sf-led.bad { background: var(--bad); box-shadow: 0 0 14px var(--bad); }
 .sf-handle { position: relative; width: 46px; height: 46px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #5a5a6c, #23232e); border: 1px solid rgba(255, 255, 255, .2); transition: transform .9s var(--ease); }
