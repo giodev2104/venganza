@@ -60,7 +60,7 @@
 .ticket .t1 { font-family: var(--font-display); letter-spacing: .22em; font-size: 11px; text-transform: uppercase; opacity: .8; } .ticket .t2 { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; line-height: 1.1; margin: 6px 0; color: #fff3cf; }
 .paws { position: relative; height: 34px; overflow: hidden; color: var(--a1); } .paws span { position: absolute; top: 4px; opacity: 0; animation: paw 3.2s ease-in-out forwards; } @keyframes paw { 0% { opacity: 0; transform: translateX(-20px); } 20%, 70% { opacity: .9; } 100% { opacity: 0; transform: translateX(30px); } }
 .savanna { position: absolute; left: 0; right: 0; bottom: 0; height: 40%; pointer-events: none; z-index: -1; opacity: .9; }
-.sun-rise { position: absolute; left: 50%; bottom: -80px; width: 260px; height: 260px; margin-left: -130px; border-radius: 50%; background: radial-gradient(circle, #fde68a, #fb923c 55%, transparent 70%); animation: sunUp 4s var(--ease) forwards; pointer-events: none; }
+.sun-rise { position: absolute; left: 50%; bottom: -80px; width: 260px; height: 260px; margin-left: -130px; border-radius: 50%; background: radial-gradient(circle, #fde68a, #fb923c 55%, transparent 70%); animation: sunUp 4s var(--ease) forwards; pointer-events: none; z-index: -1; opacity: .55; filter: blur(6px); }
 @keyframes sunUp { to { transform: translateY(-150px); } }
 
 /* ───────── Carta y finale romántico ───────── */
