@@ -20,9 +20,11 @@ const GAMES = [
 export function openArcade({ onClose } = {}) {
   const host = document.getElementById('overlay-root'); if (!host || host.querySelector('.arcade')) return;
   const root = h('div', { class: 'arcade', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Sala de juegos' }); host.append(root);
+  // Pantalla completa: sin barra del navegador y sin «tirar para recargar» (se pide dentro del toque que abre la sala).
+  try { const fs = root.requestFullscreen && root.requestFullscreen({ navigationUI: 'hide' }); if (fs && fs.catch) fs.catch(() => {}); } catch { /* no disponible */ }
   let destroy = null, gen = 0, cur = null;
   const stopGame = () => { if (cur && cur.n > 0) best.set(cur.id, cur.n); cur = null; gen++; if (destroy) { try { destroy(); } catch { /* ya cerrado */ } destroy = null; } };
-  const close = () => { stopGame(); removeEventListener('keydown', onEsc); root.remove(); if (onClose) onClose(); };
+  const close = () => { stopGame(); try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch { /* ok */ } removeEventListener('keydown', onEsc); root.remove(); if (onClose) onClose(); };
   const onEsc = (e) => { if (e.key === 'Escape') { if (root.querySelector('.ar-game')) menu(); else close(); } };
   addEventListener('keydown', onEsc);
 
