@@ -24,8 +24,16 @@ jobs:
         working-directory: app/android/app/src/main
         run: |
           R=res
-          for d in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do n=${d%%:*}; s=${d##*:}; convert "$GITHUB_WORKSPACE/icons/icon-512.png" -resize ${s}x${s} $R/mipmap-$n/ic_launcher.png; cp $R/mipmap-$n/ic_launcher.png $R/mipmap-$n/ic_launcher_round.png; done
-          for d in mdpi:108 hdpi:162 xhdpi:216 xxhdpi:324 xxxhdpi:432; do n=${d%%:*}; s=${d##*:}; convert "$GITHUB_WORKSPACE/icons/icon-maskable-512.png" -resize ${s}x${s} $R/mipmap-$n/ic_launcher_foreground.png; done
+          pip install --quiet pillow
+          python3 - <<PY
+          import os
+          from PIL import Image
+          w = os.environ['GITHUB_WORKSPACE']
+          std = Image.open(w + '/icons/icon-512.png').convert('RGBA'); mask = Image.open(w + '/icons/icon-maskable-512.png').convert('RGBA')
+          for n, a, f in [('mdpi', 48, 108), ('hdpi', 72, 162), ('xhdpi', 96, 216), ('xxhdpi', 144, 324), ('xxxhdpi', 192, 432)]:
+              for name in ('ic_launcher.png', 'ic_launcher_round.png'): std.resize((a, a), Image.LANCZOS).save('res/mipmap-%s/%s' % (n, name))
+              mask.resize((f, f), Image.LANCZOS).save('res/mipmap-%s/ic_launcher_foreground.png' % n)
+          PY
           printf '<?xml version="1.0" encoding="utf-8"?>\n<resources><color name="ic_launcher_background">#0B0A14</color></resources>\n' > $R/values/ic_launcher_background.xml
           sed -i 's#<application#<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <application#' AndroidManifest.xml
           sed -i 's#<activity#<activity android:screenOrientation="portrait"#' AndroidManifest.xml
