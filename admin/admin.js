@@ -177,6 +177,9 @@ function tabGeneral() {
       strList(c.intro.lines, { label: 'Líneas iniciales (aparecen una a una)', ph: 'Una línea corta' }),
       strList(c.intro.paragraphs, { label: 'Párrafos', area: true, ph: 'Texto' }),
       h('div', { class: 'grid2' }, text(c.intro, 'button', 'Texto del botón'), text(c.intro, 'small', 'Letra pequeña'))),
+    (() => { const sch = s.schedule || (s.schedule = { enabled: false, timezone: 'Europe/Madrid', startAt: '', dailyTime: '18:30' });
+      return sec('Calendario de desbloqueo', 'Hora de Madrid. Antes de la fecha de inicio solo se ve una cuenta atrás. Después de terminar un regalo, el siguiente se abre al día siguiente a la hora indicada. Tú, en modo pruebas, no tienes esperas.',
+        check(sch, 'enabled', 'Activar calendario'), h('div', { class: 'grid2' }, text(sch, 'startAt', 'Se abre el primer regalo (fecha y hora)', { type: 'datetime-local' }), text(sch, 'dailyTime', 'Cada regalo siguiente se abre a las', { type: 'time' }))); })(),
     sec('Dificultad y ayudas', 'Nada bloquea nunca: las ayudas suben de nivel hasta que la última da la respuesta.',
       h('div', { class: 'grid2' },
         select(s, 'difficulty', 'Dificultad', [['easy', 'Fácil (ayudas antes)'], ['normal', 'Normal'], ['hard', 'Difícil (ayudas más tarde)']]),

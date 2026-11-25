@@ -60,6 +60,7 @@ export class Game {
       first: all[0]?.id, visibleChapters: visible.length, totalChapters: all.length,
       chapterIds: all.map((c) => c.id),
       settings: { hintAfterFails: s.hintAfterFails, hintDelaySec: s.hintDelaySec, wrongOverlayEvery: s.wrongOverlayEvery, geolocation: s.geolocation, difficulty: s.difficulty, hideFinal: s.hideFinalChapterUntilFakeEnding },
+      schedule: s.schedule && s.schedule.enabled ? { enabled: true, timezone: s.schedule.timezone || 'Europe/Madrid', startAt: s.schedule.startAt, dailyTime: s.schedule.dailyTime || '18:30' } : null,
       bouncers: (s.bouncerMedia || []).map((id) => this.mediaUrl(id)).filter(Boolean),
       trolls: { cheer: cfg.trolls.cheer }, achievements: (cfg.achievements || []).map((a) => ({ id: a.id, icon: a.icon })),
     };

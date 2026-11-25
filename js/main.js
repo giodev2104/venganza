@@ -8,6 +8,8 @@ import * as ui from './ui.js';
 import * as audio from './audio.js';
 import * as fx from './fx.js';
 import * as B from './bouncers.js';
+import * as clock from './clock.js';
+import { waitScreen } from './screens/wait.js';
 import { rt } from './rt.js';
 import { syncPending } from './achievements.js';
 import { refreshHUD, currentId, visibleIds } from './progress.js';
@@ -60,7 +62,7 @@ async function main() {
     try { pub = JSON.parse(localStorage.getItem('venganza2.pub') || 'null'); } catch { pub = null; }
     if (!pub) { document.body.append(h('div', { class: 'boot-error' }, h('h1', null, 'Sin conexión'), h('p', null, 'No se puede cargar la aventura. Conéctate una vez para descargarla; después funciona con poca cobertura.'), h('button', { class: 'btn', onclick: () => location.reload() }, 'Reintentar'))); return; }
   }
-  rt.pub = pub; let S = store.state();
+  rt.pub = pub; window.__pn = (pub.meta && pub.meta.playerName) || 'Nixi'; await clock.sync(); let S = store.state();
   if (!rt.test && S.epoch !== pub.epoch) { store.reset(pub.epoch); S = store.state(); }
   if (testN) { await applyTest(testN); S = store.state(); }
   const k = params.get('k'); if (k) { rt.pendingCode = k.slice(0, 40); history.replaceState(null, '', location.pathname); }
@@ -76,6 +78,7 @@ async function main() {
   syncPending();
 
   ui.setTheme(currentId() ? (store.cs(currentId()).meta ? store.cs(currentId()).meta.theme : 'c1') : 'c1', { quiet: true });
+  if (clock.enabled() && clock.now() < clock.startAt()) { ui.HUD.hide && ui.HUD.hide(); await waitScreen(clock.startAt()); }
   if (!S.introDone) { await soundGate(); await intro(pub); S.introDone = true; S.startedAt = Date.now(); store.save(); }
   else if (!rt.test) { await soundGate(); }
   ui.HUD.show(); refreshHUD();

@@ -42,6 +42,7 @@ export function defaultConfig() {
       hintDelaySec: 45,
       wrongOverlayEvery: 3, // pantalla grande de fallo: la 1ª vez y cada N fallos; el resto, aviso breve
       geolocation: true,
+      schedule: { enabled: true, timezone: 'Europe/Madrid', startAt: '2026-11-27T18:30', dailyTime: '18:30' }, // el juego no se abre antes de startAt; cada regalo siguiente, al día siguiente a dailyTime
       bouncerMedia: ['bounce-hugo', 'bounce-nixi', 'photo-us'],
       minigames: { memory: true, jigsaw: true, runner: true, runaway: true, sequence: true, hidden: true, scratch: true, pixel: true, order: true, safe: true },
       hideFinalChapterUntilFakeEnding: true,

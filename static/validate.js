@@ -74,6 +74,12 @@ export function validateConfig(cfg) {
     if (tasks.length && !(slots.has(1) && slots.has(2))) W(`${W0}: las pistas 1 y 2 no están asignadas a pruebas distintas; las que falten se entregarán en la última prueba.`);
   }
   if (!cfg.chapters.some((c) => c.n === 1)) E('Falta el capítulo 1');
+  const sc = cfg.settings.schedule;
+  if (sc && sc.enabled) {
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(String(sc.startAt || '')) || Number.isNaN(Date.parse(sc.startAt))) E('Calendario: la fecha y hora de inicio no es válida.');
+    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(String(sc.dailyTime || ''))) E('Calendario: la hora diaria no es válida (formato HH:MM).');
+    else if (Date.parse(sc.startAt) < Date.now() - 864e5) W('Calendario: la fecha de inicio ya pasó, así que el primer regalo está abierto desde ya.');
+  }
   if (cfg.settings.ringReferenceEnabled) W('Has activado la referencia al anillo/propuesta: se mostrará el texto configurado en la revelación final.');
   if (cfg.chapters.some((c) => c.hidden) && !cfg.chapters.some((c) => c.gift && c.gift.fakeEnding)) W('Hay un capítulo oculto pero ningún regalo activa el falso final, así que el capítulo oculto se mostraría directamente.');
   return { errors, warnings, pending: pendingItems(cfg) };
