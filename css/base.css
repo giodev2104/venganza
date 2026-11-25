@@ -24,6 +24,7 @@
 #app[data-theme='c4'] { --a1: #ecd08f; --a2: #f4a9c4; --a3: #c4b5fd; --btn: linear-gradient(135deg, #ecd08f, #e8a3bd); --on-btn: #1a0f1e; --glow: 232, 190, 120; --paper: #1a1020; --font-display: 'Fraunces', Georgia, serif; --ink-3: #a79bb8; }
 
 *, *::before, *::after { box-sizing: border-box; }
+html { overscroll-behavior: none; }
 html, body { height: 100%; margin: 0; background: #0a0814; color: var(--ink); }
 body { font-family: var(--font-ui); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
 button, input, textarea { font: inherit; color: inherit; }
@@ -55,7 +56,7 @@ img, svg, canvas { display: block; max-width: 100%; }
 .lowfx .bg-glow { animation: none; } .lowfx #ambient { display: none; }
 
 /* ───────── Escenario con scroll real (arregla el overflow:hidden del original) ───────── */
-#stage { position: absolute; inset: 0; z-index: 2; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; outline: none; padding-top: env(safe-area-inset-top); scrollbar-width: none; }
+#stage { overscroll-behavior: contain; position: absolute; inset: 0; z-index: 2; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; outline: none; padding-top: env(safe-area-inset-top); scrollbar-width: none; }
 #stage::-webkit-scrollbar { display: none; }
 body.has-hud #stage { padding-top: calc(var(--hud-h) + env(safe-area-inset-top)); }
 .screen { min-height: 100%; width: 100%; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; padding: 18px 20px max(30px, calc(env(safe-area-inset-bottom) + 18px)); }

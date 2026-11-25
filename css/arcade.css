@@ -1,5 +1,5 @@
 /* ───────── Sala de juegos ───────── */
-.arcade { position: absolute; inset: 0; z-index: 80; display: flex; flex-direction: column; background: radial-gradient(900px 600px at 50% -10%, rgba(124, 58, 237, .35), transparent 60%), #08050f; color: var(--ink); padding: max(14px, env(safe-area-inset-top)) 16px max(14px, env(safe-area-inset-bottom)); animation: tcIn .25s ease both; overflow-y: auto; }
+.arcade { overscroll-behavior: contain; position: absolute; inset: 0; z-index: 80; display: flex; flex-direction: column; background: radial-gradient(900px 600px at 50% -10%, rgba(124, 58, 237, .35), transparent 60%), #08050f; color: var(--ink); padding: max(14px, env(safe-area-inset-top)) 16px max(14px, env(safe-area-inset-bottom)); animation: tcIn .25s ease both; overflow-y: auto; }
 .ar-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 8px; }
 .ar-head h2 { margin: 0; font: 700 1.5rem var(--font-display); letter-spacing: -.02em; }
 .ar-x, .ar-back { border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 8px 14px; font: 600 .95rem var(--font-ui); cursor: pointer; }
@@ -58,3 +58,7 @@
 .wk-tip { margin: 0; text-align: center; color: var(--ink-3); font-size: .85rem; } .wk-tip b { color: #f9a8d4; }
 .wk-msg { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(8, 5, 15, .5); border-radius: 20px; font: 700 1.3rem var(--font-display); animation: pulse 1.6s infinite; }
 @keyframes pulse { 50% { opacity: .55; } }
+
+/* Sin «tirar para recargar» mientras se juega: los gestos son del juego */
+.ar-game, .ar-game * { touch-action: none; }
+.ar-stage, .g48, .wk { overscroll-behavior: none; }
