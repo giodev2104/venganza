@@ -1,0 +1,8 @@
+{
+  "appId": "com.giodev.venganza",
+  "appName": "La Venganza 2.0",
+  "webDir": "www",
+  "backgroundColor": "#0b0a14",
+  "server": { "url": "https://giodev2104.github.io/venganza/", "cleartext": false, "errorPath": "offline.html" },
+  "android": { "allowMixedContent": false }
+}
