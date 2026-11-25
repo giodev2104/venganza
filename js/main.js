@@ -1,4 +1,5 @@
 // Arranque: carga del estado, época remota, modo pruebas, PWA, flujo principal (intro → mapa → capítulos).
+import './nopull.js';
 import { h, $, sleep } from './util.js';
 import { icon } from './icons.js';
 import { get, api } from './api.js';
