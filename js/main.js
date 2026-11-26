@@ -57,7 +57,16 @@ function freebar() {
   bar.append(h('b', null, 'PRUEBAS · sin esperas'), h('button', { onclick: () => { if (confirm('¿Borrar esta partida de pruebas y empezar de cero?')) hardReset(); } }, 'Reiniciar'));
 }
 
+/** /test/ solo funciona en un navegador con sesión abierta en el panel. */
+async function freeAllowed() {
+  try { await get('/api/admin/me'); return true; } catch { /* sin sesión */ }
+  $('#stage').append(h('div', { class: 'boot-error' }, h('h1', null, 'Aquí no hay nada'), h('p', null, 'Esta página es solo para Hugo.'),
+    h('a', { class: 'btn', href: 'admin/' }, 'Entrar al panel'), h('a', { class: 'btn btn-ghost', href: './' }, 'Ir a la aventura')));
+  return false;
+}
+
 async function main() {
+  if (rt.free && !(await freeAllowed())) return;
   const params = new URLSearchParams(location.search);
   let testN = false;
   try { testN = await setupTest(params); } catch { /* sin pruebas */ }
