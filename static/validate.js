@@ -79,6 +79,8 @@ export function validateConfig(cfg) {
     if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(String(sc.startAt || '')) || Number.isNaN(Date.parse(sc.startAt))) E('Calendario: la fecha y hora de inicio no es válida.');
     if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(String(sc.dailyTime || ''))) E('Calendario: la hora diaria no es válida (formato HH:MM).');
     else if (Date.parse(sc.startAt) < Date.now() - 864e5) W('Calendario: la fecha de inicio ya pasó, así que el primer regalo está abierto desde ya.');
+    if (sc.finalAt && (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(String(sc.finalAt)) || Number.isNaN(Date.parse(sc.finalAt)))) E('Calendario: la fecha del regalo secreto no es válida.');
+    else if (sc.finalAt && Date.parse(sc.finalAt) < Date.parse(sc.startAt)) W('Calendario: la fecha del regalo secreto es anterior al inicio.');
   }
   if (cfg.settings.ringReferenceEnabled) W('Has activado la referencia al anillo/propuesta: se mostrará el texto configurado en la revelación final.');
   if (cfg.chapters.some((c) => c.hidden) && !cfg.chapters.some((c) => c.gift && c.gift.fakeEnding)) W('Hay un capítulo oculto pero ningún regalo activa el falso final, así que el capítulo oculto se mostraría directamente.');

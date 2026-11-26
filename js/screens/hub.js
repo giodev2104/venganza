@@ -13,7 +13,7 @@ import { openArcade } from './arcade.js';
 
 const THEMES = { c1: 'c1', c2: 'c2', c3: 'c3', c4: 'c4' };
 
-const unlockAt = (id, i, ids) => { if (!clock.enabled() || cs(id).opened) return 0; if (i === 0) return clock.startAt(); const prev = cs(ids[i - 1]); return prev.done ? clock.nextDay(prev.finishedAt || clock.now()) : 0; };
+const unlockAt = (id, i, ids) => { if (!clock.enabled() || cs(id).opened) return 0; if (i === 0) return clock.startAt(); const prev = cs(ids[i - 1]); if (!prev.done) return 0; const next = clock.nextDay(prev.finishedAt || clock.now()); return clock.isSecret(id) ? Math.max(next, clock.finalAt()) : next; };
 function gateOrButton(id, c, i, ids, resolve) {
   const go = h('button', { class: 'btn', onclick: () => { audio.sfx('unlock'); resolve(id); } }, c.opened ? 'Continuar' : 'Empezar', h('span', { html: icon('arrow-right', 20) }));
   const at = unlockAt(id, i, ids); if (!at || clock.now() >= at) return go;

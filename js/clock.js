@@ -23,6 +23,9 @@ export function zoned(ymd, hm, tz) {
 const sched = () => { const s = rt.pub && rt.pub.schedule; return s && s.enabled && !rt.test ? s : null; };
 export const enabled = () => !!sched();
 export function startAt() { const s = sched(); if (!s) return 0; const [d, hm] = String(s.startAt).split('T'); return zoned(d, hm, s.timezone || 'Europe/Madrid'); }
+/** Fecha fija a partir de la que se abre el regalo secreto (capítulo oculto); 0 si no hay. */
+export function finalAt() { const s = sched(); if (!s || !s.finalAt) return 0; const [d, hm] = String(s.finalAt).split('T'); return zoned(d, hm, s.timezone || 'Europe/Madrid'); }
+export const isSecret = (id) => { const s = sched(); return !!(s && s.secretId && s.secretId === id); };
 /** Instante en que se abre el capítulo siguiente a uno terminado en finishedAt: el día siguiente a la hora diaria. */
 export function nextDay(finishedAt) {
   const s = sched(); if (!s) return 0; const tz = s.timezone || 'Europe/Madrid', g = parts(finishedAt, tz);
