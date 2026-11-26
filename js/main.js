@@ -52,10 +52,16 @@ function testbar() {
     btn('Salir', () => { store.useKey('venganza2.test'); store.reset(); store.flush(); location.href = '/'; }));
 }
 
+function freebar() {
+  const bar = $('#testbar'); bar.hidden = false; document.body.classList.add('testing');
+  bar.append(h('b', null, 'PRUEBAS · sin esperas'), h('button', { onclick: () => { if (confirm('¿Borrar esta partida de pruebas y empezar de cero?')) hardReset(); } }, 'Reiniciar'));
+}
+
 async function main() {
   const params = new URLSearchParams(location.search);
   let testN = false;
   try { testN = await setupTest(params); } catch { /* sin pruebas */ }
+  if (rt.free && !testN) store.useKey('venganza2.free'); // /test/: partida aparte, sin tocar la de verdad
   store.load();
   let pub;
   try { pub = await get('/api/public'); try { localStorage.setItem('venganza2.pub', JSON.stringify(pub)); } catch { /* ok */ } }
@@ -75,7 +81,8 @@ async function main() {
   ui.HUD.init({ bag: openBag, ach: openAch, settings: () => openSettings({ onReset: hardReset, install: installEvt ? async () => { installEvt.prompt(); await installEvt.userChoice; installEvt = null; } : null }) });
   rt.openBag = openBag;
   if (rt.test) { document.body.classList.add('testing'); testbar(); }
-  if ('serviceWorker' in navigator && !rt.test) navigator.serviceWorker.register('sw.js').catch(() => {});
+  else if (rt.free) freebar();
+  if ('serviceWorker' in navigator && !rt.test && !rt.free) navigator.serviceWorker.register('sw.js').catch(() => {});
   syncPending();
 
   ui.setTheme(currentId() ? (store.cs(currentId()).meta ? store.cs(currentId()).meta.theme : 'c1') : 'c1', { quiet: true });

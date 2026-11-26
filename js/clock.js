@@ -20,7 +20,7 @@ export function zoned(ymd, hm, tz) {
   for (let i = 0; i < 3; i++) t = Date.UTC(y, mo - 1, d, h, mi) - offsetAt(t, tz);
   return t;
 }
-const sched = () => { const s = rt.pub && rt.pub.schedule; return s && s.enabled && !rt.test ? s : null; };
+const sched = () => { const s = rt.pub && rt.pub.schedule; return s && s.enabled && !rt.test && !rt.free ? s : null; };
 export const enabled = () => !!sched();
 export function startAt() { const s = sched(); if (!s) return 0; const [d, hm] = String(s.startAt).split('T'); return zoned(d, hm, s.timezone || 'Europe/Madrid'); }
 /** Fecha fija a partir de la que se abre el regalo secreto (capítulo oculto); 0 si no hay. */
